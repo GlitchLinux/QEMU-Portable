@@ -1,0 +1,9 @@
+;!@Install@!UTF-8!
+Title="QEMU Portable"
+ExtractPathText="Extracting QEMU Portable..."
+ExtractPathTitle="QEMU Portable"
+ExtractDialogText="Extracting files..."
+InstallPath="%TEMP%\\qemu-portable"
+OverwriteMode="2"
+RunProgram="QEMU-Portable.exe"
+;!@InstallEnd@!
