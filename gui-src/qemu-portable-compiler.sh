@@ -112,26 +112,27 @@ OUT_PATH="${OUT_PATH:-$DEFAULT_OUT}"
 echo ""
 
 # ---- SFX stub ----
-# Look for 7zSD.sfx in gui-src, or extract from an existing SFX, or use system 7z.sfx
+# Must use 7zSD.sfx (supports RunProgram in sfx_config.txt)
+# The generic 7z.sfx only shows an "Extract to" dialog - NOT what we want
 SFX_STUB=""
 if [ -f "$GUI_DIR/7zSD.sfx" ]; then
     SFX_STUB="$GUI_DIR/7zSD.sfx"
-elif [ -f "$GUI_DIR/sfx_stub.sfx" ]; then
-    SFX_STUB="$GUI_DIR/sfx_stub.sfx"
+elif [ -f "$SCRIPT_DIR/7zSD.sfx" ]; then
+    SFX_STUB="$SCRIPT_DIR/7zSD.sfx"
 fi
 
 if [ -z "$SFX_STUB" ]; then
-    # Try system 7z.sfx
-    for p in /usr/lib/p7zip/7z.sfx /usr/share/p7zip/7z.sfx /usr/lib/peazip/res/bin/7z/7z.sfx; do
-        if [ -f "$p" ]; then
-            SFX_STUB="$p"
-            echo -e "${GREY}Using system SFX stub: $SFX_STUB${NC}"
-            break
-        fi
-    done
+    echo ""
+    echo -e "${RED}7zSD.sfx not found!${NC}"
+    echo -e "${GREY}The generic 7z.sfx stub only shows an extract dialog.${NC}"
+    echo -e "${GREY}7zSD.sfx is required for auto-extract + auto-launch.${NC}"
+    echo ""
+    echo -e "Place 7zSD.sfx in: $GUI_DIR/"
+    echo -e "Download from: https://github.com/nicenemo/7zip-extra/releases"
+    die "Missing 7zSD.sfx - cannot build auto-launching SFX."
 fi
 
-[ -n "$SFX_STUB" ] || die "No 7z SFX stub found. Place 7zSD.sfx in gui-src/ or install p7zip-full."
+ok "SFX stub: $SFX_STUB"
 
 # ---- SFX config ----
 SFX_CONFIG="$GUI_DIR/sfx_config.txt"
